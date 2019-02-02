@@ -5,7 +5,7 @@ type Role int
 
 // Constants that describe role of the user
 const (
-	EndUser State = iota
+	EndUser Role = iota
 	Hunter
 	Admin
 )
@@ -19,4 +19,12 @@ type User struct {
 // GetRole func return current role of the user
 func (u *User) GetRole() Role {
 	return u.role
+}
+
+// NewUser func creates new user with specified id and role
+func NewUser(id string, role Role) *User {
+	return &User{
+		ID:   id,
+		role: role,
+	}
 }
