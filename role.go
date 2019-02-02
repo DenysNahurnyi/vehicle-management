@@ -43,6 +43,7 @@ func NewUser(id string, role Role) *User {
 }
 
 // Since we have hierarchical structure of roles, we can create levels of roles where the highest can do anything the lower can
+
 // AppropriateRoleLevel check wheter user can do actions appropriate to some neededLevel role
 func AppropriateRoleLevel(action string, currentRole Role, neededLevel Role) error {
 	if currentRole < neededLevel {
