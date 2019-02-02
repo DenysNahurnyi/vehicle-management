@@ -20,6 +20,11 @@ const (
 	Unknown
 )
 
+const (
+	// VehicleIdleStatePossibleHours is amount of hours after which Following the taks conditions
+	VehicleIdleStatePossibleHours = time.Hour * 48
+)
+
 func (s State) String() string {
 	stateStr := "State type is invalid"
 	switch s {
@@ -63,20 +68,39 @@ func NewVehicle(id string, state State, battery uint8) *Vehicle {
 	}
 }
 
-// GetState func return current state of the vehicle
-func (v *Vehicle) GetState() State {
-	return v.state
-}
-
-// SetState func set incomming state to the vehicle
-func (v *Vehicle) SetState(state State) {
+// AutomaticStateChange checks whether state has to be changed automaticly based on external conditions
+func (v *Vehicle) AutomaticStateChange(localTime time.Time) bool {
 	if v.state == Riding && v.battery < 20 {
 		v.state = BatteryLow
 		// Automatic state change because no condition needed...
 		v.state = Bounty
-		return
+		v.updatedAt = time.Now()
+		return true
 	}
-	v.state = state
+	if v.state == Ready {
+		// Check last time state change, possible v.state -> Unknown
+		if v.updatedAt.Add(VehicleIdleStatePossibleHours).Before(localTime) {
+			v.state = Unknown
+			return true
+		}
+		// Check localTime && v.battery, possible -> Bounty
+	}
+	return false
+}
+
+// GetState func return current state of the vehicle
+func (v *Vehicle) GetState(localTime time.Time) State {
+	v.AutomaticStateChange(localTime)
+	return v.state
+}
+
+// SetState func set incomming state to the vehicle
+func (v *Vehicle) SetState(state State, localTime time.Time) {
+	if !v.AutomaticStateChange(localTime) {
+		v.state = state
+		v.updatedAt = localTime
+	}
+	return
 }
 
 // Charge func set vehicle battery level to 100%

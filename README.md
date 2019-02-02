@@ -46,3 +46,4 @@ Here I modified this schene a bit to avoid some logical mistakes. In real world 
 
  - Since the scheme of battery level change was not provided, for the sake of simplicity I will assume that every EndRide action will subtract 10% of battery level.
 
+ - Since library has to be stateless, I can't run any timers to track when 48 hours will pass or local time, so any vehicle state manipulation will require pass localTime
