@@ -63,3 +63,7 @@ Here I modified this schene a bit to avoid some logical mistakes. In real world 
  2. Vehicle automatically goes to the Bounty state
  3. Hunder do the chain: Collect -> ChargeAndDrop -> PrepareDropped 
  4. Admin place vehicle to the service mode
+
+# Usage
+The best documentation are tests, so you can look at them. To tun tests go to the repo directory and run `go test`
+
