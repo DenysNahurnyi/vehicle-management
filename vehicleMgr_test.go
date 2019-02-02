@@ -36,11 +36,11 @@ func TestEndRide(t *testing.T) {
 	// Riding -> Ready
 	err := Ride(admin, vehicle)
 	if err != nil {
-		t.Error("Failed to ride a vehicle")
+		t.Error("Failed to ride a vehicle, err:", err)
 	}
 	err = EndRide(admin, vehicle)
 	if err != nil {
-		t.Error("Failed to end the ride of a vehicle")
+		t.Error("Failed to end the ride of a vehicle, err:", err)
 	}
 	// Ready -> ???
 	err = EndRide(admin, vehicle)
@@ -48,6 +48,29 @@ func TestEndRide(t *testing.T) {
 		t.Error("Vehicle state transition is broken, end ride for a vehicle that is already in ready state should not be possible")
 	}
 	if vehicle.GetState() != Ready {
+		t.Error("Vehicle state transition is broken, vehicle state change is wrong")
+	}
+}
+
+// TestCollect test whether hunter can collect a vehicle
+func TestCollect(t *testing.T) {
+	idGenerator := NewGenerator()
+
+	hunter := NewUser(idGenerator.GenerateID(), Hunter)
+
+	vehicle := NewVehicle(idGenerator.GenerateID(), Bounty, 100)
+
+	// Riding -> Ready
+	err := Collect(hunter, vehicle)
+	if err != nil {
+		t.Error("Failed to collect a vehicle, err:", err)
+	}
+	// Collected -> ???
+	err = Collect(hunter, vehicle)
+	if err == nil {
+		t.Error("Vehicle state transition is broken, collect for a vehicle that is already in collected state should not be possible")
+	}
+	if vehicle.GetState() != Collected {
 		t.Error("Vehicle state transition is broken, vehicle state change is wrong")
 	}
 }

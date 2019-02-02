@@ -21,3 +21,23 @@ func EndRide(user *User, vehicle *Vehicle) error {
 	vehicle.SetState(Ready)
 	return nil
 }
+
+// Collect func allow user to return vehicle form riding to ready state
+func Collect(user *User, vehicle *Vehicle) error {
+	neededLevel := Hunter
+	requiredCurrentState := Bounty
+	finalState := Collected
+	attemptedAction := "Collect"
+
+	// Check user role
+	err := AppropriateRoleLevel(attemptedAction, user.GetRole(), neededLevel)
+	if err != nil {
+		return err
+	}
+	// Check status of the vehicle
+	if vehicle.GetState() != requiredCurrentState {
+		return StateTransitionErr(vehicle.GetState(), requiredCurrentState)
+	}
+	vehicle.SetState(finalState)
+	return nil
+}
