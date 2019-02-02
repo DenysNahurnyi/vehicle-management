@@ -1,6 +1,8 @@
 package vehiclemanagement
 
-import "testing"
+import (
+	"testing"
+)
 
 // TestRide test whether user can ride a vehicle
 func TestRide(t *testing.T) {
@@ -109,4 +111,30 @@ func TestPrepareDropped(t *testing.T) {
 	if vehicle.GetState() != Ready {
 		t.Error("Vehicle state transition is broken, vehicle state change is wrong")
 	}
+}
+
+// TestCollect test whether hunter can collect a vehicle
+func TestBatteryLow(t *testing.T) {
+	idGenerator := NewGenerator()
+	user := NewUser(idGenerator.GenerateID(), EndUser)
+	vehicle := NewVehicle(idGenerator.GenerateID(), Ready, 29)
+
+	// Dropped -> Ready
+	err := Ride(user, vehicle)
+	if err != nil {
+		t.Error("Failed to ride the vehicle, err:", err)
+	}
+	err = EndRide(user, vehicle)
+	if err != nil {
+		t.Error("Failed to ride the vehicle, err:", err)
+	}
+	if vehicle.GetState() != Bounty {
+		t.Error("Vehicle state transition is broken, vehicle state change is wrong")
+	}
+	// Bounty -> Riding
+	err = Ride(user, vehicle)
+	if err == nil {
+		t.Error("Vehicle state transition is broken, ride vehicle that is in bounty state should not be possible")
+	}
+
 }

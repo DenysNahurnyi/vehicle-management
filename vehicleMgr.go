@@ -20,6 +20,7 @@ func EndRide(user *User, vehicle *Vehicle) error {
 		return StateTransitionErr(vehicle.GetState(), Riding)
 	}
 	// Actual actions
+	vehicle.UseBattery()
 	vehicle.SetState(Ready)
 	return nil
 }

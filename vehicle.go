@@ -1,6 +1,8 @@
 package vehiclemanagement
 
-import "time"
+import (
+	"time"
+)
 
 // State type describe possible state of the vehicle
 type State int
@@ -68,10 +70,27 @@ func (v *Vehicle) GetState() State {
 
 // SetState func set incomming state to the vehicle
 func (v *Vehicle) SetState(state State) {
+	if v.state == Riding && v.battery < 20 {
+		v.state = BatteryLow
+		// Automatic state change because no condition needed...
+		v.state = Bounty
+		return
+	}
 	v.state = state
 }
 
 // Charge func set vehicle battery level to 100%
 func (v *Vehicle) Charge() {
 	v.battery = 100
+}
+
+// UseBattery subtracts 10% of battery level, look in READMR.md: tricky moments
+func (v *Vehicle) UseBattery() {
+	batteryLevel := v.battery - 10
+
+	// it's not possible in current scheme but anyway it's important
+	if batteryLevel < 0 {
+		v.battery = 0
+	}
+	v.battery = batteryLevel
 }
