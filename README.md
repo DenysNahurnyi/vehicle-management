@@ -31,12 +31,12 @@ Solution that validates and handles statetransitions for an abstract vehicle. Va
  9) Unknown
 
 # State transition scheme(with my comments)
-<a href="http://tinypic.com?ref=1198ml2" target="_blank"><img src="http://i65.tinypic.com/1198ml2.png" border="0" alt="Image and video hosting by TinyPic"></a>
+<a href="http://tinypic.com?ref=2ln97ib" target="_blank"><img src="http://i64.tinypic.com/2ln97ib.png" border="0" alt="Image and video hosting by TinyPic"></a>
 Here I modified this schene a bit to avoid some logical mistakes. In real world we will discuss that tagather but I guess this is ok to do that for this kind of task.
 
  - [1] In requirements said that `A Hunter has picked up a vehicle for charging.` that means that battery level hsa to be increased to some level, for now we can always assume that it increases to 100%
 
- - [2] Since `Vehicle` can be claimed only be Hunter(and Admin) then this is the action, but it's not automatic 
+ - [2] Since transition `BatteryLow -> Bounty` should happened automatically, Vehicle will never be in the BatteryLow state.
 
  - [3] Since transer `Ready -> Bounty` can be done automaticly after 9:30 PM then after the first day evening `Vehicle` will never be `Ready` again
 
