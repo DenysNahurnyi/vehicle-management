@@ -29,3 +29,7 @@ Solution that validates and handles statetransitions for an abstract vehicle. Va
  7) ServiceMode
  8) Terminated
  9) Unknown
+
+State transition scheme(with my comments)
+<a href="http://tinypic.com?ref=1198ml2" target="_blank"><img src="http://i65.tinypic.com/1198ml2.png" border="0" alt="Image and video hosting by TinyPic"></a>
+
