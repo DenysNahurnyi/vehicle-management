@@ -18,6 +18,16 @@ type VehicleMgmtError struct {
 	eType ErrorType
 }
 
+// Error implement error interface
+func (e *VehicleMgmtError) Error() string {
+	return e.err.Error()
+}
+
+// EType retutns typo of the error
+func (e *VehicleMgmtError) EType() ErrorType {
+	return e.eType
+}
+
 // StateTransitionErr func creates VehicleMgmtError based on coflict of currState and desiredState
 func StateTransitionErr(currState, desiredState State) *VehicleMgmtError {
 	msg := "State transition is not possible, vehicle state is " + currState.String() +
@@ -28,12 +38,12 @@ func StateTransitionErr(currState, desiredState State) *VehicleMgmtError {
 	}
 }
 
-// Error implement error interface
-func (e *VehicleMgmtError) Error() string {
-	return e.err.Error()
-}
-
-// EType retutns typo of the error
-func (e *VehicleMgmtError) EType() ErrorType {
-	return e.eType
+// RolePermissionErr func creates VehicleMgmtError based on the lack of permissions of the userRole in comparison with the requiredRole
+func RolePermissionErr(action string, userRole, requiredRole Role) *VehicleMgmtError {
+	msg := "Attempted action " + action + " is not possible, user role " + userRole.String() +
+		" is not enough, " + requiredRole.String() + " is needed."
+	return &VehicleMgmtError{
+		err:   errors.New(msg),
+		eType: StateTransition,
+	}
 }
