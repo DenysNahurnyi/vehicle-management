@@ -51,6 +51,16 @@ type Vehicle struct {
 	battery   uint8 // Not conventional, but for the sake of saving memory
 }
 
+// NewVehicle func creates new vehicle with specified id and state
+func NewVehicle(id string, state State, battery uint8) *Vehicle {
+	return &Vehicle{
+		ID:        id,
+		updatedAt: time.Now(),
+		state:     state,
+		battery:   battery,
+	}
+}
+
 // GetState func return current state of the vehicle
 func (v *Vehicle) GetState() State {
 	return v.state
@@ -61,12 +71,7 @@ func (v *Vehicle) SetState(state State) {
 	v.state = state
 }
 
-// NewVehicle func creates new vehicle with specified id and state
-func NewVehicle(id string, state State, battery uint8) *Vehicle {
-	return &Vehicle{
-		ID:        id,
-		updatedAt: time.Now(),
-		state:     state,
-		battery:   battery,
-	}
+// Charge func set vehicle battery level to 100%
+func (v *Vehicle) Charge() {
+	v.battery = 100
 }

@@ -60,7 +60,7 @@ func TestCollect(t *testing.T) {
 
 	vehicle := NewVehicle(idGenerator.GenerateID(), Bounty, 100)
 
-	// Riding -> Ready
+	// Bounty -> Collect
 	err := Collect(hunter, vehicle)
 	if err != nil {
 		t.Error("Failed to collect a vehicle, err:", err)
@@ -71,6 +71,29 @@ func TestCollect(t *testing.T) {
 		t.Error("Vehicle state transition is broken, collect for a vehicle that is already in collected state should not be possible")
 	}
 	if vehicle.GetState() != Collected {
+		t.Error("Vehicle state transition is broken, vehicle state change is wrong")
+	}
+}
+
+// TestCollect test whether hunter can collect a vehicle
+func TestChargeAndDrop(t *testing.T) {
+	idGenerator := NewGenerator()
+
+	hunter := NewUser(idGenerator.GenerateID(), Hunter)
+
+	vehicle := NewVehicle(idGenerator.GenerateID(), Collected, 100)
+
+	// Collected -> Dropped
+	err := ChargeAndDrop(hunter, vehicle)
+	if err != nil {
+		t.Error("Failed to collect a vehicle, err:", err)
+	}
+	// Dropped -> ???
+	err = ChargeAndDrop(hunter, vehicle)
+	if err == nil {
+		t.Error("Vehicle state transition is broken, charge nd drop for a vehicle that is already in dropped state should not be possible")
+	}
+	if vehicle.GetState() != Dropped {
 		t.Error("Vehicle state transition is broken, vehicle state change is wrong")
 	}
 }
