@@ -45,3 +45,4 @@ Here I modified this schene a bit to avoid some logical mistakes. In real world 
 # Some tricky moments
 
  - Since the scheme of battery level change was not provided, for the sake of simplicity I will assume that every EndRide action will subtract 10% of battery level.
+
