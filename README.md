@@ -23,7 +23,9 @@ Solution that validates and handles statetransitions for an abstract vehicle. Va
  4) Riding - An EndUser is currently using this vehicle; it can not be claimed by another user or Hunter.
  5) Collected - A Hunter has picked up a vehicle for charging.
  6) Dropped - A hunter has returned a vehicle after being charged.
+ 
 *Not commisiooned for service, not claimable by either EndUsers nor Hunters.
+
  7) ServiceMode
  8) Terminated
  9) Unknown
