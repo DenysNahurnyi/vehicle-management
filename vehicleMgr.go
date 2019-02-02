@@ -108,3 +108,19 @@ func PrepareDropped(user *User, vehicle *Vehicle, localTime time.Time) error {
 	vehicle.SetState(finalState, localTime)
 	return nil
 }
+
+// AdminConfig func allow admin manually set any possible state to vehicle with no previous state checks
+func AdminConfig(user *User, vehicle *Vehicle, state State) error {
+	neededLevel := Admin
+	finalState := state
+	attemptedAction := "manually set state " + state.String()
+
+	// Check user role
+	err := AppropriateRoleLevel(attemptedAction, user.GetRole(), neededLevel)
+	if err != nil {
+		return err
+	}
+	// Actual actions
+	vehicle.SetStateManually(finalState)
+	return nil
+}

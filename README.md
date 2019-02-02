@@ -47,3 +47,12 @@ Here I modified this schene a bit to avoid some logical mistakes. In real world 
  - Since the scheme of battery level change was not provided, for the sake of simplicity I will assume that every EndRide action will subtract 10% of battery level.
 
  - Since library has to be stateless, I can't run any timers to track when 48 hours will pass or local time, so any vehicle state manipulation will require pass localTime and can happened only when user do some actions with vehicle. Also app can run v.AutomaticStateChange() once at configurable period of time for each vehicle or GetState of ecah vehicle right after 21:30. Any of those cases are possible. 
+
+# Test flows
+
+ Flow#1
+
+ 1. User ride the vehicle until 21:30
+ 2. Vehicle automatically goes to the Bounty state
+ 3. Hunder do the chain: Collect -> ChargeAndDrop -> PrepareDropped 
+ 4. Admin terminate vehicle

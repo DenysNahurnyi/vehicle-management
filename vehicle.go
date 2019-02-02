@@ -27,6 +27,8 @@ const (
 	VehicleAfterHoursBounty = 21
 	// VehicleAfterMinutesBounty is amount of minutes of current day when we can execute vehicle transfer to the Bounty state
 	VehicleAfterMinutesBounty = 30
+	// VehicleAfterAmountOfMinutesBounty is amount of minutes after which we can execute vehicle transfer to the Bounty state, just for caching processing
+	VehicleAfterAmountOfMinutesBounty = VehicleAfterHoursBounty*60 + VehicleAfterMinutesBounty
 )
 
 func (s State) String() string {
@@ -88,7 +90,8 @@ func (v *Vehicle) AutomaticStateChange(localTime time.Time) bool {
 			return true
 		}
 		// Check localTime && v.battery, possible -> Bounty
-		if localTime.Hour() >= VehicleAfterHoursBounty && localTime.Minute() >= VehicleAfterMinutesBounty && v.battery < 100 {
+		currrentTimeMinutes := localTime.Hour()*60 + localTime.Minute()
+		if currrentTimeMinutes >= VehicleAfterAmountOfMinutesBounty && v.battery < 100 {
 			v.state = Bounty
 			return true
 		}
@@ -109,6 +112,11 @@ func (v *Vehicle) SetState(state State, localTime time.Time) {
 		v.updatedAt = localTime
 	}
 	return
+}
+
+// SetStateManually func allow to set any state maually with no checks
+func (v *Vehicle) SetStateManually(state State) {
+	v.state = state
 }
 
 // Charge func set vehicle battery level to 100%

@@ -214,3 +214,47 @@ func TestEveningBounty(t *testing.T) {
 		t.Error("Vehicle state transition is broken, vehicle state change is wrong")
 	}
 }
+
+// TestAdminConfig test vehicle behavior as a response to admin actions
+func TestAdminConfig(t *testing.T) {
+	idGenerator := NewGenerator()
+	user := NewUser(idGenerator.GenerateID(), Admin)
+	vehicle := NewVehicle(idGenerator.GenerateID(), Ready, 100)
+	localTime := time.Now()
+
+	// Ready -> Unknown
+	err := AdminConfig(user, vehicle, Unknown)
+	if err != nil {
+		t.Error("Failed to configure the vehicle, err:", err)
+	}
+	if vehicle.GetState(localTime) != Unknown {
+		t.Error("Vehicle state transition is broken, vehicle state change is wrong")
+	}
+
+	// Unknown -> Terminated
+	err = AdminConfig(user, vehicle, Terminated)
+	if err != nil {
+		t.Error("Failed to configure the vehicle, err:", err)
+	}
+	if vehicle.GetState(localTime) != Terminated {
+		t.Error("Vehicle state transition is broken, vehicle state change is wrong")
+	}
+
+	// Terminated -> ServiceMode
+	err = AdminConfig(user, vehicle, ServiceMode)
+	if err != nil {
+		t.Error("Failed to configure the vehicle, err:", err)
+	}
+	if vehicle.GetState(localTime) != ServiceMode {
+		t.Error("Vehicle state transition is broken, vehicle state change is wrong")
+	}
+
+	// ServiceMode -> Ready
+	err = AdminConfig(user, vehicle, Ready)
+	if err != nil {
+		t.Error("Failed to configure the vehicle, err:", err)
+	}
+	if vehicle.GetState(localTime) != Ready {
+		t.Error("Vehicle state transition is broken, vehicle state change is wrong")
+	}
+}

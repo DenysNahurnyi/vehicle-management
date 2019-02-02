@@ -47,7 +47,7 @@ func NewUser(id string, role Role) *User {
 // AppropriateRoleLevel check wheter user can do actions appropriate to some neededLevel role
 func AppropriateRoleLevel(action string, currentRole Role, neededLevel Role) error {
 	if currentRole < neededLevel {
-		RolePermissionErr(action, currentRole, neededLevel)
+		return RolePermissionErr(action, currentRole, neededLevel)
 	}
 	return nil
 }
