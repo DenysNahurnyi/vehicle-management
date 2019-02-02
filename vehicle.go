@@ -60,3 +60,13 @@ func (v *Vehicle) GetState() State {
 func (v *Vehicle) SetState(state State) {
 	v.state = state
 }
+
+// NewVehicle func creates new vehicle with specified id and state
+func NewVehicle(id string, state State, battery uint8) *Vehicle {
+	return &Vehicle{
+		ID:        id,
+		updatedAt: time.Now(),
+		state:     state,
+		battery:   battery,
+	}
+}
