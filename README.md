@@ -41,3 +41,7 @@ Here I modified this schene a bit to avoid some logical mistakes. In real world 
  - [3] Since transer `Ready -> Bounty` can be done automaticly after 9:30 PM then after the first day evening `Vehicle` will never be `Ready` again
 
  - [4] Transer `Ready -> Bounty` should be done only if the battery level of `Vehicle` is lower then 100%, in another case Hunter will be able to make cycle `Bounty -(Hunter)-> Collected -(Hunter)-> Dropped -(Hunter)-> Ready -(Automatically)-> Bounty` and abuse our system.
+
+# Some tricky moments
+
+ - Since the scheme of battery level change was not provided, for the sake of simplicity I will assume that every EndRide action will subtract 10% of battery level.
