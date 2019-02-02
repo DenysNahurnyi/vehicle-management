@@ -19,7 +19,7 @@ Solution that validates and handles statetransitions for an abstract vehicle. Va
 
  1) Ready - The vehicle is operational and can be claimed by an enduser
  2) BatteryLow -  The vehicle is low on battery but otherwise operational. The vehicle cannot be claimed by an EndUser but can be claimed by a Hunter.
- 3) Bountu - Only available for Hunter to be picked up for charging.
+ 3) Bounty - Only available for Hunter to be picked up for charging.
  4) Riding - An EndUser is currently using this vehicle; it can not be claimed by another user or Hunter.
  5) Collected - A Hunter has picked up a vehicle for charging.
  6) Dropped - A hunter has returned a vehicle after being charged.
