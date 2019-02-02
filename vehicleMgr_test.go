@@ -5,15 +5,13 @@ import "testing"
 // TestRide test whether user can ride a vehicle
 func TestRide(t *testing.T) {
 	idGenerator := NewGenerator()
-
 	admin := NewUser(idGenerator.GenerateID(), Admin)
-
 	vehicle := NewVehicle(idGenerator.GenerateID(), Ready, 100)
 
 	// Ready -> Riding
 	err := Ride(admin, vehicle)
 	if err != nil {
-		t.Error("Failed to ride a vehicle")
+		t.Error("Failed to ride the vehicle")
 	}
 	// Riding -> ???
 	err = Ride(admin, vehicle)
@@ -28,9 +26,7 @@ func TestRide(t *testing.T) {
 // TestEndRide test whether user can end it's ride
 func TestEndRide(t *testing.T) {
 	idGenerator := NewGenerator()
-
 	admin := NewUser(idGenerator.GenerateID(), Admin)
-
 	vehicle := NewVehicle(idGenerator.GenerateID(), Ready, 100)
 
 	// Riding -> Ready
@@ -40,7 +36,7 @@ func TestEndRide(t *testing.T) {
 	}
 	err = EndRide(admin, vehicle)
 	if err != nil {
-		t.Error("Failed to end the ride of a vehicle, err:", err)
+		t.Error("Failed to end the ride of the vehicle, err:", err)
 	}
 	// Ready -> ???
 	err = EndRide(admin, vehicle)
@@ -55,15 +51,13 @@ func TestEndRide(t *testing.T) {
 // TestCollect test whether hunter can collect a vehicle
 func TestCollect(t *testing.T) {
 	idGenerator := NewGenerator()
-
 	hunter := NewUser(idGenerator.GenerateID(), Hunter)
-
 	vehicle := NewVehicle(idGenerator.GenerateID(), Bounty, 100)
 
 	// Bounty -> Collect
 	err := Collect(hunter, vehicle)
 	if err != nil {
-		t.Error("Failed to collect a vehicle, err:", err)
+		t.Error("Failed to collect the vehicle, err:", err)
 	}
 	// Collected -> ???
 	err = Collect(hunter, vehicle)
@@ -78,22 +72,41 @@ func TestCollect(t *testing.T) {
 // TestCollect test whether hunter can collect a vehicle
 func TestChargeAndDrop(t *testing.T) {
 	idGenerator := NewGenerator()
-
 	hunter := NewUser(idGenerator.GenerateID(), Hunter)
-
 	vehicle := NewVehicle(idGenerator.GenerateID(), Collected, 100)
 
 	// Collected -> Dropped
 	err := ChargeAndDrop(hunter, vehicle)
 	if err != nil {
-		t.Error("Failed to collect a vehicle, err:", err)
+		t.Error("Failed to charge and drop the vehicle, err:", err)
 	}
 	// Dropped -> ???
 	err = ChargeAndDrop(hunter, vehicle)
 	if err == nil {
-		t.Error("Vehicle state transition is broken, charge nd drop for a vehicle that is already in dropped state should not be possible")
+		t.Error("Vehicle state transition is broken, charge and drop for a vehicle that is already in dropped state should not be possible")
 	}
 	if vehicle.GetState() != Dropped {
+		t.Error("Vehicle state transition is broken, vehicle state change is wrong")
+	}
+}
+
+// TestCollect test whether hunter can collect a vehicle
+func TestPrepareDropped(t *testing.T) {
+	idGenerator := NewGenerator()
+	hunter := NewUser(idGenerator.GenerateID(), Hunter)
+	vehicle := NewVehicle(idGenerator.GenerateID(), Dropped, 100)
+
+	// Dropped -> Ready
+	err := PrepareDropped(hunter, vehicle)
+	if err != nil {
+		t.Error("Failed to collect the vehicle, err:", err)
+	}
+	// Ready -> ???
+	err = PrepareDropped(hunter, vehicle)
+	if err == nil {
+		t.Error("Vehicle state transition is broken, preapare dropped vehicle that is already in ready state should not be possible")
+	}
+	if vehicle.GetState() != Ready {
 		t.Error("Vehicle state transition is broken, vehicle state change is wrong")
 	}
 }

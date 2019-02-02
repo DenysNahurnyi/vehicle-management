@@ -7,6 +7,7 @@ func Ride(user *User, vehicle *Vehicle) error {
 	if vehicle.GetState() != Ready {
 		return StateTransitionErr(vehicle.GetState(), Ready)
 	}
+	// Actual actions
 	vehicle.SetState(Riding)
 	return nil
 }
@@ -18,16 +19,17 @@ func EndRide(user *User, vehicle *Vehicle) error {
 	if vehicle.GetState() != Riding {
 		return StateTransitionErr(vehicle.GetState(), Riding)
 	}
+	// Actual actions
 	vehicle.SetState(Ready)
 	return nil
 }
 
-// Collect func allow user to collect vehicle
+// Collect func allow hunter to collect vehicle
 func Collect(user *User, vehicle *Vehicle) error {
 	neededLevel := Hunter
 	requiredCurrentState := Bounty
 	finalState := Collected
-	attemptedAction := "collect"
+	attemptedAction := "collect vehicle"
 
 	// Check user role
 	err := AppropriateRoleLevel(attemptedAction, user.GetRole(), neededLevel)
@@ -38,16 +40,17 @@ func Collect(user *User, vehicle *Vehicle) error {
 	if vehicle.GetState() != requiredCurrentState {
 		return StateTransitionErr(vehicle.GetState(), requiredCurrentState)
 	}
+	// Actual actions
 	vehicle.SetState(finalState)
 	return nil
 }
 
-// ChargeAndDrop func allow user to charge collected vehicle and drop it
+// ChargeAndDrop func allow hunter to charge collected vehicle and drop it
 func ChargeAndDrop(user *User, vehicle *Vehicle) error {
 	neededLevel := Hunter
 	requiredCurrentState := Collected
 	finalState := Dropped
-	attemptedAction := "charge and drop"
+	attemptedAction := "charge and drop vehicle"
 
 	// Check user role
 	err := AppropriateRoleLevel(attemptedAction, user.GetRole(), neededLevel)
@@ -58,8 +61,29 @@ func ChargeAndDrop(user *User, vehicle *Vehicle) error {
 	if vehicle.GetState() != requiredCurrentState {
 		return StateTransitionErr(vehicle.GetState(), requiredCurrentState)
 	}
-	// Actuall actions
+	// Actual actions
 	vehicle.Charge()
+	vehicle.SetState(finalState)
+	return nil
+}
+
+// PrepareDropped func allow hunter to prepare dropped vehicle to make it ready to use
+func PrepareDropped(user *User, vehicle *Vehicle) error {
+	neededLevel := Hunter
+	requiredCurrentState := Dropped
+	finalState := Ready
+	attemptedAction := "prepare dropped vehicle to make it ready"
+
+	// Check user role
+	err := AppropriateRoleLevel(attemptedAction, user.GetRole(), neededLevel)
+	if err != nil {
+		return err
+	}
+	// Check status of the vehicle
+	if vehicle.GetState() != requiredCurrentState {
+		return StateTransitionErr(vehicle.GetState(), requiredCurrentState)
+	}
+	// Actual actions
 	vehicle.SetState(finalState)
 	return nil
 }
