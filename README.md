@@ -32,7 +32,7 @@ Solution that validates and handles statetransitions for an abstract vehicle. Va
 
 # State transition scheme(with my comments)
 <a href="http://tinypic.com?ref=2ln97ib" target="_blank"><img src="http://i64.tinypic.com/2ln97ib.png" border="0" alt="Image and video hosting by TinyPic"></a>
-Here I modified this schene a bit to avoid some logical mistakes. In real world we will discuss that tagather but I guess this is ok to do that for this kind of task.
+Here I modified this schene a bit to avoid some logical mistakes. In real world I would discuss that assumptions togather with team but I guess it's ok to do that for this kind of task.
 
  - [1] In requirements said that `A Hunter has picked up a vehicle for charging.` that means that battery level hsa to be increased to some level, for now we can always assume that it increases to 100%
 
