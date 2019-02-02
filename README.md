@@ -34,8 +34,10 @@ Solution that validates and handles statetransitions for an abstract vehicle. Va
 <a href="http://tinypic.com?ref=1198ml2" target="_blank"><img src="http://i65.tinypic.com/1198ml2.png" border="0" alt="Image and video hosting by TinyPic"></a>
 Here I modified this schene a bit to avoid some logical mistakes. In real world we will discuss that tagather but I guess this is ok to do that for this kind of task.
 
- [1] In requirements said that `A Hunter has picked up a vehicle for charging.` that means that battery level hsa to be increased to some level, for now we can always assume that it increases to 100%
- [2] Since `Vehicle` can be claimed only be Hunter(and Admin) then this is the action, but it's not automatic 
- [3] Since transer `Ready -> Bounty` can be done automaticly after 9:30 PM then after the first day evening `Vehicle` will never be `Ready` again
- [4] Transer `Ready -> Bounty` should be done only if the battery level of `Vehicle` is lower then 100%, in another case Hunter will be able to make cycle `Bounty -(Hunter)-> Collected -(Hunter)-> Dropped -(Hunter)-> Ready -(Automatically)-> Bounty` and abuse our system.
+ - [1] In requirements said that `A Hunter has picked up a vehicle for charging.` that means that battery level hsa to be increased to some level, for now we can always assume that it increases to 100%
 
+ - [2] Since `Vehicle` can be claimed only be Hunter(and Admin) then this is the action, but it's not automatic 
+
+ - [3] Since transer `Ready -> Bounty` can be done automaticly after 9:30 PM then after the first day evening `Vehicle` will never be `Ready` again
+
+ - [4] Transer `Ready -> Bounty` should be done only if the battery level of `Vehicle` is lower then 100%, in another case Hunter will be able to make cycle `Bounty -(Hunter)-> Collected -(Hunter)-> Dropped -(Hunter)-> Ready -(Automatically)-> Bounty` and abuse our system.
