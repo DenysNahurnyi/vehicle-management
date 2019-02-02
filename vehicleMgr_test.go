@@ -128,7 +128,7 @@ func TestPrepareDropped(t *testing.T) {
 	}
 }
 
-// TestCollect test whether hunter can collect a vehicle
+// TestBatteryLow test vehicle behavior with low battery level
 func TestBatteryLow(t *testing.T) {
 	idGenerator := NewGenerator()
 	user := NewUser(idGenerator.GenerateID(), EndUser)
@@ -156,7 +156,7 @@ func TestBatteryLow(t *testing.T) {
 	}
 }
 
-// TestCollect test whether hunter can collect a vehicle
+// TestUnknowState test vehicle behavior that was in idle state more than 48 hours
 func TestUnknowState(t *testing.T) {
 	idGenerator := NewGenerator()
 	user := NewUser(idGenerator.GenerateID(), EndUser)
@@ -175,7 +175,7 @@ func TestUnknowState(t *testing.T) {
 	if err != nil {
 		t.Error("Failed to ride the vehicle, err:", err)
 	}
-	localTime = localTime.Add(time.Hour*491 + time.Nanosecond)
+	localTime = localTime.Add(time.Hour*48 + time.Nanosecond)
 
 	// Ready -> Riding, 48 hours and 1 nanosecond after last action with this vehicle
 	err = Ride(user, vehicle, localTime)
@@ -186,5 +186,31 @@ func TestUnknowState(t *testing.T) {
 	err = Ride(user, vehicle, localTime)
 	if err == nil {
 		t.Error("Vehicle state transition is broken, ride vehicle that is in bounty state should not be possible")
+	}
+}
+
+// TestEveningBounty test vehicle behavior in the Evening Bounty transfer time
+func TestEveningBounty(t *testing.T) {
+	idGenerator := NewGenerator()
+	user := NewUser(idGenerator.GenerateID(), EndUser)
+	vehicle := NewVehicle(idGenerator.GenerateID(), Ready, 100)
+	// 02/02/2019 20:00
+	localTime := time.Date(2019, 2, 2, 20, 0, 0, 0, time.UTC)
+
+	// Ready -> Riding
+	err := Ride(user, vehicle, localTime)
+	if err != nil {
+		t.Error("Failed to ride the vehicle, err:", err)
+	}
+	localTime = localTime.Add(time.Hour*1 + time.Minute*31)
+
+	// Riding -> Ready
+	err = EndRide(user, vehicle, localTime)
+	if err != nil {
+		t.Error("Failed to ride the vehicle, err:", err)
+	}
+
+	if vehicle.GetState(localTime) != Bounty {
+		t.Error("Vehicle state transition is broken, vehicle state change is wrong")
 	}
 }

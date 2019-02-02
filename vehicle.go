@@ -23,6 +23,10 @@ const (
 const (
 	// VehicleIdleStatePossibleHours is amount of hours after which Following the taks conditions
 	VehicleIdleStatePossibleHours = time.Hour * 48
+	// VehicleAfterHoursBounty is amount of hours of current day when we can execute vehicle transfer to the Bounty state
+	VehicleAfterHoursBounty = 21
+	// VehicleAfterMinutesBounty is amount of minutes of current day when we can execute vehicle transfer to the Bounty state
+	VehicleAfterMinutesBounty = 30
 )
 
 func (s State) String() string {
@@ -84,6 +88,10 @@ func (v *Vehicle) AutomaticStateChange(localTime time.Time) bool {
 			return true
 		}
 		// Check localTime && v.battery, possible -> Bounty
+		if localTime.Hour() >= VehicleAfterHoursBounty && localTime.Minute() >= VehicleAfterMinutesBounty && v.battery < 100 {
+			v.state = Bounty
+			return true
+		}
 	}
 	return false
 }

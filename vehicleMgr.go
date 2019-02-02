@@ -4,26 +4,44 @@ import "time"
 
 // Ride func allow user to ride a vehicle
 func Ride(user *User, vehicle *Vehicle, localTime time.Time) error {
-	// Do not check role of user, everyone allowed
+	neededLevel := EndUser
+	requiredCurrentState := Ready
+	finalState := Riding
+	attemptedAction := "ride"
+
+	// Check user role
+	err := AppropriateRoleLevel(attemptedAction, user.GetRole(), neededLevel)
+	if err != nil {
+		return err
+	}
 	// Check status of the vehicle
-	if vehicle.GetState(localTime) != Ready {
-		return StateTransitionErr(vehicle.GetState(localTime), Ready)
+	if vehicle.GetState(localTime) != requiredCurrentState {
+		return StateTransitionErr(vehicle.GetState(localTime), requiredCurrentState)
 	}
 	// Actual actions
-	vehicle.SetState(Riding, localTime)
+	vehicle.SetState(finalState, localTime)
 	return nil
 }
 
 // EndRide func allow user to return vehicle form riding to ready state
 func EndRide(user *User, vehicle *Vehicle, localTime time.Time) error {
-	// Do not check role of user, everyone allowed
+	neededLevel := EndUser
+	requiredCurrentState := Riding
+	finalState := Ready
+	attemptedAction := "end the ride"
+
+	// Check user role
+	err := AppropriateRoleLevel(attemptedAction, user.GetRole(), neededLevel)
+	if err != nil {
+		return err
+	}
 	// Check status of the vehicle
-	if vehicle.GetState(localTime) != Riding {
-		return StateTransitionErr(vehicle.GetState(localTime), Riding)
+	if vehicle.GetState(localTime) != requiredCurrentState {
+		return StateTransitionErr(vehicle.GetState(localTime), requiredCurrentState)
 	}
 	// Actual actions
 	vehicle.UseBattery()
-	vehicle.SetState(Ready, localTime)
+	vehicle.SetState(finalState, localTime)
 	return nil
 }
 
